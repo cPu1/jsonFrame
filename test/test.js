@@ -137,7 +137,8 @@ describe('TcpJsonRpcClient', function () {
 
 	it('should handle invoke a method which throws an error, and receive an error message', function (done) {
 		rpcClient.invoke('findVowels', ['c', 'o', 'n', 's', 'o', 'n', 'a', 'n', 't'], function(err, response) {
-			err.should.be.an.instanceOf(String);
+			err.should.be.an.instanceOf(Object);
+			err.should.have.properties('message', 'code', 'data');
 			assert.equal(response, null);
 			return done();
 		});
