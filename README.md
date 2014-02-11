@@ -36,6 +36,9 @@ Both the client and server must agree on a length prefix.
   
 ```
 
+##Notifications
+[JSON-RPC notifications] signify the clients lack of interest in the corresponding response object. As such, they do not receive a response object.
+
 ##Batch requests
   A batch invoke operation receives a batch callback. Request objects are added to batch using `add` and `notify`.
   The batch builder received in callback is chainable and has a fluent interface allowing calls of the form:
@@ -103,3 +106,4 @@ For each JSON-encoded string, jsonTransformer emits a `data` event with the pars
 
 [jsonrpc 2.0]: www.jsonrpc.org
 [streams2 Transform]: http://nodejs.org/api/stream.html#stream_class_stream_transform_1
+[JSON-RPC notifications] http://www.jsonrpc.org/specification#notification
