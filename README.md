@@ -80,6 +80,18 @@ For each JSON-encoded string, jsonTransformer emits a `data` event with the pars
       //json is now a JavaScript object/array
     })
     .on('parse error', console.log);
+    
+  
+  var socket = net.connect(options);
+  socket.pipe(jsonTransformer);
+  jsonTransformer.on('data', handleResponse);
+  
+  net.createServer(function (socket) {
+    socket.pipe(jsonTransformer);
+    jsonTransformer
+      .on('data', handleRequest)
+      .on('parse error', notifyError);
+  });
   
 ```
 
