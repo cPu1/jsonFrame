@@ -73,7 +73,8 @@ For each JSON-encoded string, jsonTransformer emits a `data` event with the pars
 
 ```javascript
   
-  var jsonTransformer = jsonFrame({lengthPrefix: 2}).jsonTransformer();
+  var jsonFrame = jsonFrame({lengthPrefix: 2}),
+  jsonTransformer = jsonFrame.jsonTransformer();
   someReadable.pipe(jsonTransformer);
   jsonTransformer
     .on('data', function (json) {
@@ -89,7 +90,12 @@ For each JSON-encoded string, jsonTransformer emits a `data` event with the pars
   net.createServer(function (socket) {
     socket.pipe(jsonTransformer);
     jsonTransformer
-      .on('data', handleRequest)
+      .on('data', function (json) {
+        var response = buildResponse(json),
+        lengthPrefixedJson = jsonFrame.build(response);
+        socket.write(lengthPrefixedJson);
+        
+      })
       .on('parse error', notifyError);
   });
   
