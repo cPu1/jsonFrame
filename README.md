@@ -7,7 +7,7 @@ Both the client and server must agree on a length prefix.
 ## Package
 * JSON-RPC TCP server and client
 * Connect middleware for HTTP `application/json-*` POST requests
-* TODO: jQuery function plugin for HTTP transport
+* jQuery function plugin for HTTP transport
 * `jsonTransformer`: A node.js [streams2 Transform] implementation that reads length-prefixed messages built using `jsonFrame.build(message)`
 
 
@@ -140,6 +140,21 @@ For each JSON-encoded string, jsonTransformer emits a `data` event with the pars
       .on('parse error', notifyError);
   });
   
+```
+
+###jQuery JSON-RPC Function Plugin
+Supports the same methods as JsonRpcClient: `invoke`, `notify`
+
+```javascript
+
+  var $jsonrpc = $.jsonrpc({url: 'path/to/jsonrpc/'});
+  $jsonrpc.invoke('findUser', {userId: 42}, function (err, res) {
+    if(err) return console.log('Error finding user');
+    console.log('User found: ', res);
+  });
+  
+  $jsonrpc.notify('updateUser', { userId: 42, tags: ['jsonrpc2'] });
+
 ```
 
 [jsonrpc 2.0]: www.jsonrpc.org
