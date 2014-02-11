@@ -3,9 +3,13 @@ TcpJsonRpcServer = require('../lib/tcp-rpc-server'),
 object = require('./methods'),
 should = require('../../should'),
 assert = require('assert'),
-// jFrame = require('../jsonframe'),
-rpcServer = new TcpJsonRpcServer({object: object}),
-rpcClient = new TcpJsonRpcClient({host: 'localhost', port: 3000});
+jFrame = require('../lib/index'),
+jsonFrame = jFrame({lengthPrefix: 2}),
+rpcServer = jsonFrame.server(object),
+rpcClient = jsonFrame.client({host: 'localhost', port: 3000})
+/*rpcServer = new TcpJsonRpcServer({object: object}),
+rpcClient = new TcpJsonRpcClient({host: 'localhost', port: 3000});*/
+
 
 rpcServer.listen(3000);
 
