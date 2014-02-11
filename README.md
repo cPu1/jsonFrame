@@ -8,10 +8,26 @@ Both the client and server must agree on a length prefix.
 * JSON-RPC TCP server and client
 * Connect middleware for HTTP `application/json-rpc` POST requests
 * TODO: jQuery function plugin for HTTP transport
-* jsonTransformer: A node.js [streams2 Transform] implementation that reads length-prefixed messages built using jsonFrame.build
+* `jsonTransformer`: A node.js [streams2 Transform] implementation that reads length-prefixed messages built using `jsonFrame.build(message)`
 
 
 ##Usage
+
+```javascript
+var methods = {
+  add: function () {
+    return Array.prototype.slice.call(arguments).reduce(function (sum, i) {
+      return sum + i;
+    });
+  }
+}
+
+var jFrame = require('jsonFrame'),
+jsonFrame = jFrame({lengthPrefix: 2}),
+rpcServer = jsonFrame.tcp.server(methods),
+rpcClient = jsonFrame.tcp.client({host: '', port: 3000});
+
+```
 
 ##Simple requests
 
