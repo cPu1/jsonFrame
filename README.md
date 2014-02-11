@@ -106,4 +106,4 @@ For each JSON-encoded string, jsonTransformer emits a `data` event with the pars
 
 [jsonrpc 2.0]: www.jsonrpc.org
 [streams2 Transform]: http://nodejs.org/api/stream.html#stream_class_stream_transform_1
-[JSON-RPC notifications] http://www.jsonrpc.org/specification#notification
+[JSON-RPC notifications]: http://www.jsonrpc.org/specification#notification
