@@ -7,4 +7,6 @@ A jsonrpc 2.0 implementation supporting both TCP and HTTP transports. The TCP im
 * JSON-RPC TCP server and client
 * Connect middleware for application/json-rpc POST requests
 * TODO: jQuery function plugin for HTTP transport
-* jsonTransformer: A node.js streams2 Transform implementation that reads length-prefixed messages built using jsonFrame.build
+* jsonTransformer: A node.js [streams2 Transform] implementation that reads length-prefixed messages built using jsonFrame.build
+
+[streams2 Transform]: http://nodejs.org/api/stream.html#stream_class_stream_transform_1
