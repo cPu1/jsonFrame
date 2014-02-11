@@ -45,6 +45,8 @@ A jsonrpc 2.0 implementation supporting both TCP and HTTP transports. The TCP im
     .add('someMethod', [4,2])
   
   ```
+  
+  Response handler is invoked with as many arguments as the no. of non-notification requests, in the order in which they   were `add`ed to batch. Each of the response object has either a response property or an error property for failed       requests.
 
 ```javascript
   
