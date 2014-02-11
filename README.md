@@ -24,8 +24,8 @@ var methods = {
 
 var jFrame = require('jsonFrame'),
 jsonFrame = jFrame({lengthPrefix: 2}),
-rpcServer = jsonFrame.tcp.server(methods), //TcpJsonRpcServer
-rpcClient = jsonFrame.tcp.client({host: '', port: 3000}); //TcpJsonRpcClient
+rpcServer = jsonFrame.server(methods), //TcpJsonRpcServer
+rpcClient = jsonFrame.client({host: '', port: 3000}); //TcpJsonRpcClient
 
 ```
 
@@ -95,13 +95,14 @@ rpcClient = jsonFrame.tcp.client({host: '', port: 3000}); //TcpJsonRpcClient
 ```
 
 ##JSON-RPC Connect Middleware
-A [Connect Middleware] for handling JSON-RPC requests. The middleware must be configured with an object containing the methods you wish to invoke.
+A [Connect Middleware] for handling JSON-RPC requests. The middleware must be configured with an object containing the methods you wish to invoke. The middleware depends on `bodyParser` middleware and must be configured after it.
 
 ##Example
 
 ```javascript
-
-  
+//... other middleware
+  app.use(connect.bodyParser()); //or express.bodyParser() using express
+  app.use(jsonFrame.jsonrpc(methods));
 
 ```
 
