@@ -36,9 +36,6 @@ Both the client and server must agree on a length prefix.
   
 ```
 
-##Notifications
-[JSON-RPC notifications] signify the clients lack of interest in the corresponding response object. As such, they do not receive a response object.
-
 ##Batch requests
   A batch invoke operation receives a batch callback. Request objects are added to batch using `add` and `notify`.
   The batch builder received in callback is chainable and has a fluent interface allowing calls of the form:
@@ -65,6 +62,20 @@ Both the client and server must agree on a length prefix.
        if(!res1.error) console.log(res1.response);
        if(!res2.error) console.log(res2.response);
   });
+```
+
+
+##Notifications
+[JSON-RPC notifications] signify the client's lack of interest in the corresponding response object. As such, they do not receive a response object.
+
+```javascript
+
+  rpcClient.invoke('updateStatus', {from: 'jsonrpc', to: 'jsonrpc2'});
+  
+  rpcClient.invoke('updateJsonRpcVersion', {from: '1', to: '2.0'});
+  
+  rpcClient.invoke('updateJsonRpcVersion', [1, '2.0']);
+
 ```
 
 ##jsonTransformer
