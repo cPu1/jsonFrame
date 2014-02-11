@@ -143,7 +143,7 @@ For each JSON-encoded string, jsonTransformer emits a `data` event with the pars
 ```
 
 ###jQuery JSON-RPC Function Plugin
-Supports the same methods as JsonRpcClient: `invoke`, `notify`
+Supports the same methods as `JsonRpcClient`: `invoke`, `notify`
 
 ```javascript
 
@@ -154,6 +154,16 @@ Supports the same methods as JsonRpcClient: `invoke`, `notify`
   });
   
   $jsonrpc.notify('updateUser', { userId: 42, tags: ['jsonrpc2'] });
+  
+  
+  $jsonrpc.invoke(function (batch) {
+    batch
+      .notify('updateUser', [42, {tags: 'jsonrpc2'}])
+      .notify('updateUser', {userId: 420, npmPackages: 'jsonFrame'})
+      .notify('deleteUser', {username: 'dubitableUser'});
+    }, function () {
+    //all notifications, response handler will be called immediately
+    });
 
 ```
 
