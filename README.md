@@ -55,7 +55,7 @@ rpcClient = jsonFrame.tcp.client({host: '', port: 3000});
 ##Batch requests
   A batch invoke operation receives a batch callback. Request objects are added to batch using `add` and `notify`.
   The batch builder received in callback is chainable and has a fluent interface allowing calls of the form:
-  ```
+  ``` javascript
   batch
     .add('someMethod', [4,2])
     .notify('someMethod', [4,2])
