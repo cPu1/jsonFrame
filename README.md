@@ -24,8 +24,8 @@ var methods = {
 
 var jFrame = require('jsonFrame'),
 jsonFrame = jFrame({lengthPrefix: 2}),
-rpcServer = jsonFrame.tcp.server(methods),
-rpcClient = jsonFrame.tcp.client({host: '', port: 3000});
+rpcServer = jsonFrame.tcp.server(methods), //TcpJsonRpcServer
+rpcClient = jsonFrame.tcp.client({host: '', port: 3000}); //TcpJsonRpcClient
 
 ```
 
@@ -144,10 +144,12 @@ For each JSON-encoded string, jsonTransformer emits a `data` event with the pars
 
 ###jQuery JSON-RPC Function Plugin
 Supports the same methods as `JsonRpcClient`: `invoke`, `notify`
+HTTP counterpart of `TcpJsonRpcClient`
 
 ```javascript
 
   var $jsonrpc = $.jsonrpc({url: 'path/to/jsonrpc/'});
+  
   $jsonrpc.invoke('findUser', {userId: 42}, function (err, res) {
     if(err) return console.log('Error finding user');
     console.log('User found: ', res);
