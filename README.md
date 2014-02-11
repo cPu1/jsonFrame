@@ -6,7 +6,7 @@ Both the client and server must agree on a length prefix.
 
 ## Package
 * JSON-RPC TCP server and client
-* Connect middleware for HTTP `application/json-rpc` POST requests
+* Connect middleware for HTTP `application/json-*` POST requests
 * TODO: jQuery function plugin for HTTP transport
 * `jsonTransformer`: A node.js [streams2 Transform] implementation that reads length-prefixed messages built using `jsonFrame.build(message)`
 
@@ -94,6 +94,17 @@ rpcClient = jsonFrame.tcp.client({host: '', port: 3000});
 
 ```
 
+##JSON-RPC Connect Middleware
+A [Connect Middleware] for handling JSON-RPC requests. The middleware must be configured with an object containing the methods you wish to invoke.
+
+##Example
+
+```javascript
+
+  
+
+```
+
 ##jsonTransformer
 A streams 2 Transform implementation that can be `pipe`d to any `stream.Readable` stream . You'd never have to explicitly use it for serving jsonrpc clients. It can be used for applications that want to process a stream of JSON-encoded objects with each object prefixed with a length, in bytes, of the JSON object.
 
@@ -134,3 +145,4 @@ For each JSON-encoded string, jsonTransformer emits a `data` event with the pars
 [jsonrpc 2.0]: www.jsonrpc.org
 [streams2 Transform]: http://nodejs.org/api/stream.html#stream_class_stream_transform_1
 [JSON-RPC notifications]: http://www.jsonrpc.org/specification#notification
+[Connect Middleware]: http://www.senchalabs.org/connect/
