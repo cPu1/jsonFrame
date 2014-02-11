@@ -1,12 +1,12 @@
 jsonFrame
 =========
 
-A [jsonrpc 2.0] implementation supporting both TCP and HTTP transports. The TCP implementation frames each jsonrpc request/response object with a length prefix, which specifies the length in bytes of the actual message; hence the name **jsonFrame**.
+A **[jsonrpc 2.0]** implementation supporting both TCP and HTTP transports. The TCP implementation frames each jsonrpc request/response object with a length prefix, which specifies the length in bytes of the actual message; hence the name **jsonFrame**.
 Both the client and server must agree on a length prefix.
 
 ## Package
 * JSON-RPC TCP server and client
-* Connect middleware for application/json-rpc POST requests
+* Connect middleware for HTTP `application/json-rpc` POST requests
 * TODO: jQuery function plugin for HTTP transport
 * jsonTransformer: A node.js [streams2 Transform] implementation that reads length-prefixed messages built using jsonFrame.build
 
@@ -62,6 +62,25 @@ Both the client and server must agree on a length prefix.
        if(!res1.error) console.log(res1.response);
        if(!res2.error) console.log(res2.response);
   });
+```
+
+##jsonTransformer
+A streams 2 Transform implementation that can be `pipe`d to any `stream.Readable` stream . You'd never have to explicitly use it for serving jsonrpc clients. It can be used for applications that want to process a stream of JSON-encoded objects with each object prefixed with a length, in bytes, of the JSON object.
+
+For each JSON-encoded string, jsonTransformer emits a `data` event with the parsed JSON. Malformed JSON strings that are not valid according to the JSON grammar receive a `parse error` event.
+
+#Example
+
+```javascript
+  
+  var jsonTransformer = jsonFrame({lengthPrefix: 2}).jsonTransformer();
+  someReadable.pipe(jsonTransformer);
+  jsonTransformer
+    .on('data', function (json) {
+      //json is now a JavaScript object/array
+    })
+    .on('parse error', console.log);
+  
 ```
 
 [jsonrpc 2.0]: www.jsonrpc.org
