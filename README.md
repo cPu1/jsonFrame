@@ -13,7 +13,7 @@ A few solutions exist to approach this problem:
 <pre>
                                                                         ^^ delimiter
 </pre>
-* Length-prefixing sends each message by prefixing it with the number of bytes contained in the message. This allows an application to receive a message by first reading the length-prefix and then reading as many bytes as the value of length-prefix. It requires the client and server to agree on a length-prefix.
+* In Length-prefixing, each message is sent by prefixing it with the number of bytes contained in the message. This allows an application to receive a message by first reading the length-prefix and then reading as many bytes as the value of length-prefix. It requires the client and server to agree on a length-prefix.
 
 ## Package
 * JSON-RPC TCP server and client
