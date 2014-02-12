@@ -1,8 +1,18 @@
 jsonFrame
 =========
 
-A **[jsonrpc 2.0]** implementation supporting both TCP and HTTP transports. The TCP implementation frames each jsonrpc request/response object with a length prefix, which specifies the length in bytes of the actual message; hence the name **jsonFrame**.
+A **[jsonrpc 2.0]** implementation supporting both TCP and HTTP transports. The TCP implementation uses persistent connections and frames each **jsonrpc** request/response object with a length prefix, which specifies the length in bytes of the actual message; hence the name **jsonFrame**.
 Both the client and server must agree on a length prefix.
+
+##Why length-prefixing?
+TCP is a stream-oriented protocol as opposed to a message-oriented protocol like HTTP. Data is treated as a continuous flow of data and there are no self-delimiting patterns to determine where one message ends and another starts. 
+A few solutions exist to approach this problem:
+* Process a stream of JSON-encoded strings by reading each character, counting and matching `}`, and eventually parsing using `JSON.parse`. Writing a hand-coded JSON parser is ought to be slower than the native `JSON.parse` method.
+* Using a delimiter like `\n` to delimit each JSON-encoded message. However, one must also deal with the delimiter appearing in the message itself. For e.g., `{"method":"sendMessage","params":["Hello, \n jsonrpc"],"jsonrpc":"2.0"}\n`
+<br/>
+<pre>                                                                   ^^ delimiter
+</pre>
+* In Length-prefixing, each message is sent by prefixing it with the number of bytes contained in the message. This allows an application to receive a message by first reading the length-prefix and then reading as many bytes as the value of length-prefix. It requires the client and server to agree on a length-prefix.
 
 ## Package
 * JSON-RPC TCP server and client
@@ -71,18 +81,19 @@ rpcClient = jsonFrame.client({host: '', port: 3000}); //TcpJsonRpcClient
     batch
       .add('method1', [1, 2, 3])
       .add('method2', ['params 2'])
-      .notify('notification', ['I won\'t receive a response'])
+      .notify('notification', ['I won\'t receive a corresponding response object'])
       .add('method3');
     }, function (res1, res2, res3) {
        //three response objects: one for each non-notification request in the order methods were added to batch
        if(!res1.error) console.log(res1.response);
        if(!res2.error) console.log(res2.response);
+       res3.error || console.log(res3.response);
   });
 ```
 
 
 ##Notifications
-[JSON-RPC notifications] signify the client's lack of interest in the corresponding response object. As such, they do not receive a response object.
+[JSON-RPC notifications] signify the client's lack of interest in the corresponding response object. As such, they do not receive a response object and an invocation must not pass a callback.
 
 ```javascript
 
@@ -100,16 +111,17 @@ A [Connect Middleware] for handling JSON-RPC requests. The middleware must be co
 ##Example
 
 ```javascript
-//... other middleware
+   var jsonFrame = require('jsonFrame');
+//... other middlewares
   app.use(connect.bodyParser()); //or express.bodyParser() using express
   app.use(jsonFrame.jsonrpc(methods));
 
 ```
 
 ##jsonTransformer
-A streams 2 Transform implementation that can be `pipe`d to any `stream.Readable` stream . You'd never have to explicitly use it for serving jsonrpc clients. It can be used for applications that want to process a stream of JSON-encoded objects with each object prefixed with a length, in bytes, of the JSON object.
+A streams 2 Transform implementation that can be `pipe`d to any `stream.Readable` stream . You'd never have to explicitly use it for serving jsonrpc clients. It can be used for applications that want to process a stream of JSON-encoded strings with each string prefixed with a length, in bytes, of the JSON message.
 
-For each JSON-encoded string, jsonTransformer emits a `data` event with the parsed JSON. Malformed JSON strings that are not valid according to the JSON grammar receive a `parse error` event.
+For each JSON-encoded string, jsonTransformer emits a `data` event with the parsed JSON. Malformed JSON strings that are not valid according to the [JSON grammar] receive a `parse error` event.
 
 #Example
 
@@ -144,8 +156,8 @@ For each JSON-encoded string, jsonTransformer emits a `data` event with the pars
 ```
 
 ###jQuery JSON-RPC Function Plugin
-Supports the same methods as `JsonRpcClient`: `invoke`, `notify`
-HTTP counterpart of `TcpJsonRpcClient`
+HTTP counterpart of `TcpJsonRpcClient`; supports the same methods: `invoke`, `notify`
+
 
 ```javascript
 
@@ -174,3 +186,4 @@ HTTP counterpart of `TcpJsonRpcClient`
 [streams2 Transform]: http://nodejs.org/api/stream.html#stream_class_stream_transform_1
 [JSON-RPC notifications]: http://www.jsonrpc.org/specification#notification
 [Connect Middleware]: http://www.senchalabs.org/connect/
+[JSON grammar]: http://www.json.org/
