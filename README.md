@@ -146,8 +146,8 @@ For each JSON-encoded string, jsonTransformer emits a `data` event with the pars
 ```
 
 ###jQuery JSON-RPC Function Plugin
-Supports the same methods as `JsonRpcClient`: `invoke`, `notify`
-HTTP counterpart of `TcpJsonRpcClient`
+HTTP counterpart of `TcpJsonRpcClient`; supports the same methods: `invoke`, `notify`
+
 
 ```javascript
 
