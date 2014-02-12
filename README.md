@@ -7,8 +7,12 @@ Both the client and server must agree on a length prefix.
 ##Why length-prefixing?
 TCP is a stream-oriented protocol as opposed to a message-oriented protocol like HTTP. Data is treated as a continuous flow of data and there are no self-delimiting patterns to determine where one message ends and another starts. 
 There are a few solutions to approach this problem:
-* Process a stream of JSON-encoded strings by reading each character, counting and matching `}`, and eventually parsing using `JSON.parse`. This approach can be slower as JSON.parse does the same thing
+* Process a stream of JSON-encoded strings by reading each character, counting and matching `}`, and eventually parsing using `JSON.parse`. Writing a hand-coded JSON parser is ought to be slower than the native `JSON.parse` method.
 * Using a delimiter like `\n` to delimit each JSON-encoded message. However, one must also deal with the delimiter appearing in the message itself. For e.g., `{method: 'sendMessage', params: ['Hello, \n jsonrpc'], jsonrpc: '2.0'}`
+<br/>
+<pre>
+                                                                        ^^ delimiter
+</pre>
 
 ## Package
 * JSON-RPC TCP server and client
