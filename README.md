@@ -71,18 +71,19 @@ rpcClient = jsonFrame.client({host: '', port: 3000}); //TcpJsonRpcClient
     batch
       .add('method1', [1, 2, 3])
       .add('method2', ['params 2'])
-      .notify('notification', ['I won\'t receive a response'])
+      .notify('notification', ['I won\'t receive a corresponding response object'])
       .add('method3');
     }, function (res1, res2, res3) {
        //three response objects: one for each non-notification request in the order methods were added to batch
        if(!res1.error) console.log(res1.response);
        if(!res2.error) console.log(res2.response);
+       res3.error || console.log(res3.response);
   });
 ```
 
 
 ##Notifications
-[JSON-RPC notifications] signify the client's lack of interest in the corresponding response object. As such, they do not receive a response object.
+[JSON-RPC notifications] signify the client's lack of interest in the corresponding response object. As such, they do not receive a response object and an invocation must not pass a callback.
 
 ```javascript
 
@@ -100,7 +101,8 @@ A [Connect Middleware] for handling JSON-RPC requests. The middleware must be co
 ##Example
 
 ```javascript
-//... other middleware
+   var jsonFrame = require('jsonFrame');
+//... other middlewares
   app.use(connect.bodyParser()); //or express.bodyParser() using express
   app.use(jsonFrame.jsonrpc(methods));
 
