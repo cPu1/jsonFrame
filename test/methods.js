@@ -6,9 +6,11 @@ module.exports = {
 			return ~vowels.indexOf(c);
 		});
 	},
-	add: function (x, y) {
-		return x + y;
-	},
+	add: function () {
+    		return Array.prototype.slice.call(arguments).reduce(function (sum, i) {
+      			return sum + i;
+    		});
+  	},
 	addProperties: function () {
 		var o = {};
 		g = Array.prototype.slice.call(arguments, 0).forEach(function (p, i) {
