@@ -1,7 +1,7 @@
 jsonFrame
 =========
 
-A **[jsonrpc 2.0]** implementation supporting both TCP and HTTP transports. The TCP implementation uses persistent connections and frames each *jsonrpc* request/response object with a length prefix, which specifies the length in bytes of the actual message; hence the name **jsonFrame**.
+A **[jsonrpc 2.0]** implementation supporting both TCP and HTTP transports. The TCP implementation uses persistent connections and frames each **jsonrpc** request/response object with a length prefix, which specifies the length in bytes of the actual message; hence the name **jsonFrame**.
 Both the client and server must agree on a length prefix.
 
 ##Why length-prefixing?
