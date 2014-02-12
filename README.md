@@ -109,9 +109,9 @@ A [Connect Middleware] for handling JSON-RPC requests. The middleware must be co
 ```
 
 ##jsonTransformer
-A streams 2 Transform implementation that can be `pipe`d to any `stream.Readable` stream . You'd never have to explicitly use it for serving jsonrpc clients. It can be used for applications that want to process a stream of JSON-encoded objects with each object prefixed with a length, in bytes, of the JSON object.
+A streams 2 Transform implementation that can be `pipe`d to any `stream.Readable` stream . You'd never have to explicitly use it for serving jsonrpc clients. It can be used for applications that want to process a stream of JSON-encoded strings with each string prefixed with a length, in bytes, of the JSON message.
 
-For each JSON-encoded string, jsonTransformer emits a `data` event with the parsed JSON. Malformed JSON strings that are not valid according to the JSON grammar receive a `parse error` event.
+For each JSON-encoded string, jsonTransformer emits a `data` event with the parsed JSON. Malformed JSON strings that are not valid according to the [JSON grammar] receive a `parse error` event.
 
 #Example
 
@@ -176,3 +176,4 @@ HTTP counterpart of `TcpJsonRpcClient`
 [streams2 Transform]: http://nodejs.org/api/stream.html#stream_class_stream_transform_1
 [JSON-RPC notifications]: http://www.jsonrpc.org/specification#notification
 [Connect Middleware]: http://www.senchalabs.org/connect/
+[JSON grammar]: http://www.json.org/
