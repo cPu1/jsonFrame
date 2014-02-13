@@ -16,8 +16,7 @@ describe('JsonRpc validation', function () {
     asdf: 'what'
   }, {
     params: []
-  },
-  {
+  }, {
     params: [1]
   }, {
     id: 420
