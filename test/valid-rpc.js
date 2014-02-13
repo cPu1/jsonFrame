@@ -9,6 +9,7 @@ assert = require('assert'),
 
 
 socket = net.connect(options);
+rpcServer.listen(3000);
 socket.pipe(jsonTransformer);
 
 describe('async JsonRpc validation', function () {
