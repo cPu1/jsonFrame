@@ -11,7 +11,7 @@ assert = require('assert'),
 socket = net.connect(options);
 socket.pipe(jsonTransformer);
 
-describe('JsonRpc validation', function () {
+describe('async JsonRpc validation', function () {
   var malformedRequests = [ {
     asdf: 'what'
   }, {
@@ -40,3 +40,35 @@ describe('JsonRpc validation', function () {
       socket.write(jsonFrame.build(req));
   });
 });
+
+describe('JsonRpcServer validation', function () {
+  var isValid = rpcServer.isValidRequest;
+  it('should report all requests as valid', function () {
+    assert(isValid({method: 'blah'}));
+    assert(isValid({method: 'blah', params: []}));
+    assert(isValid({method: 'blah', params: [1, 2]}));
+    assert(isValid({method: 'blah', params: {name: 'test'}}));
+    assert(isValid({method: 'blah', params: [], id: 420}));
+    
+    //batch
+    assert(isValid([{method: 'some'}, {method: 'asdf'}, {method: 'what', id: 44}]));
+    
+  });
+  
+  it('should report all requests as invalid', function () {
+    assert(!isValid({params: [], id: 420}));
+    assert(!isValid({id: 420}));
+    assert(!isValid({params: 22, id: 420}));
+    assert(!isValid({params: 'what', id: 420}));
+    assert(!isValid({method: 'blah', params: [], id: ''}));
+    assert(!isValid({method: 'blah', params: [], id: '123'}));
+    assert(!isValid({params: 'what'}));
+    assert(!isValid({}));
+    assert(!isValid({method: ''}));
+    assert(!isValid({method: 420}));
+    assert(!isValid({method: [420]}));
+    
+    assert(isValid([{method: 'some'}, {method: ''}, {method: 'what', id: 44}]));
+  });
+});
+
