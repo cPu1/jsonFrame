@@ -34,6 +34,8 @@ jsonFrame = jFrame({lengthPrefix: 2}),
 rpcServer = jsonFrame.server(methods), //TcpJsonRpcServer
 rpcClient = jsonFrame.client({host: 'localhost', port: 3000}); //TcpJsonRpcClient
 
+rpcServer.listen(3000);
+
 ```
 
 ##Simple requests
