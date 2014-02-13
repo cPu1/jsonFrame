@@ -17,5 +17,8 @@ module.exports = {
 			o[p] = i;
 		});
 		return o;
+	},
+	create: function (user) {
+		return {username: user.name.toUpperCase(), age: user.age * 2}
 	}
 }

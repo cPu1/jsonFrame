@@ -12,10 +12,9 @@ rpcServer.listen(3000);
 socket.pipe(jsonTransformer);
 socket.write(jsonFrame.build({what: 'nothing'}))
 
-jsonTransformer.on('data', function (json) {
+/*jsonTransformer.on('data', function (json) {
   console.log(json)
-})
-function describe() {} function it() {}
+})*/
 
 describe('async JsonRpc validation', function () {
   var malformedRequests = [ {

@@ -177,6 +177,16 @@ describe('TcpJsonRpcClient', function () {
 		});
 	});
 
+	it('should work for object arguments', function (done) {
+		rpcClient.invoke('create', {name: 'jsonrpc', age: 2}, function (err, user) {
+			assert(!err);
+			user.should.have.properties('age', 'username');
+			user.username.should.equal('JSONRPC');
+			user.age.should.equal(4);
+			done();
+		});
+	});
+
 	it.skip('should receive rpc response objects in the order in which they were sent', function (done) {
 
 	});
