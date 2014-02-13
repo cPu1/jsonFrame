@@ -9,9 +9,6 @@ TCP is a stream-oriented protocol as opposed to a message-oriented protocol like
 A few solutions exist to approach this problem:
 * Process a stream of JSON-encoded strings by reading each character, counting and matching `}`, and eventually parsing using `JSON.parse`. Writing a hand-coded JSON parser is ought to be slower than the native `JSON.parse` method.
 * Using a delimiter like `\n` to delimit each JSON-encoded message. However, one must also deal with the delimiter appearing in the message itself. For e.g., `{"method":"sendMessage","params":["Hello, \n jsonrpc"],"jsonrpc":"2.0"}\n`
-<br/>
-<pre>                                                                   ^^ delimiter
-</pre>
 * In Length-prefixing, each message is sent by prefixing it with the number of bytes contained in the message. This allows an application to receive a message by first reading the length-prefix and then reading as many bytes as the value of length-prefix. It requires the client and server to agree on a length-prefix.
 
 ## Package
@@ -35,7 +32,7 @@ var methods = {
 var jFrame = require('jsonFrame'),
 jsonFrame = jFrame({lengthPrefix: 2}),
 rpcServer = jsonFrame.server(methods), //TcpJsonRpcServer
-rpcClient = jsonFrame.client({host: '', port: 3000}); //TcpJsonRpcClient
+rpcClient = jsonFrame.client({host: 'localhost', port: 3000}); //TcpJsonRpcClient
 
 ```
 
@@ -58,6 +55,11 @@ rpcClient = jsonFrame.client({host: '', port: 3000}); //TcpJsonRpcClient
   
   //Method with no parameters
   rpcClient.invoke('status', function (err, res) {
+    //
+  });
+  
+  rpcClient.invoke('currentJsonRpcVersion', function (err, res) {
+    err || assert.equal(res, '2.0');
   });
   
 ```
