@@ -64,6 +64,11 @@ rpcServer.listen(3000);
     err || assert.equal(res, '2.0');
   });
   
+  //structured object args
+  rpcClient.invoke('createUser', {name: 'jsonrpc', age: 2}, function (err, newUser) {
+    assert('jsonrpc' === newUser.name);
+  });
+  
 ```
 
 ##Batch requests
