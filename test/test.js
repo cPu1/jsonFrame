@@ -112,6 +112,7 @@ describe('TcpJsonRpcClient', function () {
 			.notify('this').notify('is', ['a']).notify('batch', ['batch']).notify('batch').notify('notification');
 		}, function() {
 			assert.equal(0, arguments.length);
+			arguments.should.be.empty;
 			done();
 		});
 	});
@@ -154,6 +155,7 @@ describe('TcpJsonRpcClient', function () {
 			response.should.be.an.instanceOf(Array);
 			response.length.should.be.ok;
 			response.length.should.equal(3);
+			response.should.containDeep(['o', 'o', 'a']);
 			done();
 		});
 	});
@@ -174,6 +176,9 @@ describe('TcpJsonRpcClient', function () {
 			}, function () {
 				assert.fail('I shouldn\'t be invoked');
 			});
+
+			//or
+			rpcClient.invoke(function (batch) {}, function () {}).should.throw();
 		});
 	});
 
