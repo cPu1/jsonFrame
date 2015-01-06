@@ -56,6 +56,7 @@ describe('JsonRpcServer validation', function () {
     assert(isValid({method: 'blah', params: [1, 2], jsonrpc: '2.0'}));
     assert(isValid({method: 'blah', params: {name: 'test'}, jsonrpc: '2.0'}));
     assert(isValid({method: 'blah', params: [], id: 420, jsonrpc: '2.0'}));
+    assert(isValid({method: 'asdf', jsonrpc: '2.0', id: 123}));
     
     //batch
     assert(isValid([{method: 'some'}, {method: 'asdf'}, {method: 'what', id: 44}]));
@@ -63,17 +64,18 @@ describe('JsonRpcServer validation', function () {
   });
   
   it('should report all requests as invalid', function () {
-    assert(!isValid({params: [], id: 420, jsonrpc: '2.0'}));
-    assert(!isValid({id: 420, jsonrpc: '2.0'}));
-    assert(!isValid({params: 22, id: 420, jsonrpc: '2.0'}));
-    assert(!isValid({params: 'what', id: 420, jsonrpc: '2.0'}));
-    assert(!isValid({method: 'blah', params: [], id: '', jsonrpc: '2.0'}));
-    assert(!isValid({method: 'blah', params: [], id: '123', jsonrpc: '2.0'}));
-    assert(!isValid({params: 'what'}));
-    assert(!isValid({}));
-    assert(!isValid({method: ''}));
-    assert(!isValid({method: 420}));
-    assert(!isValid({method: [420]}));
+    invalid = function () { return !isValid.apply(null, arguments)};
+    assert(invalid({params: [], id: 420, jsonrpc: '2.0'}));
+    assert(invalid({id: 420, jsonrpc: '2.0'}));
+    assert(invalid({params: 22, id: 420, jsonrpc: '2.0'}));
+    assert(invalid({params: 'what', id: 420, jsonrpc: '2.0'}));
+    assert(invalid({method: 'blah', params: [], id: '', jsonrpc: '2.0'}));
+    assert(invalid({method: 'blah', params: [], id: '123', jsonrpc: '2.0'}));
+    assert(invalid({params: 'what'}));
+    assert(invalid({}));
+    assert(invalid({method: ''}));
+    assert(invalid({method: 420}));
+    assert(invalid({method: [420]}));
     
     assert(isValid([{method: 'some'}, {method: ''}, {method: 'what', id: 44}]));
   });
