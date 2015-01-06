@@ -1,15 +1,19 @@
 jsonFrame
 =========
 
-A **[jsonrpc 2.0]** implementation supporting both TCP and HTTP transports. The TCP implementation uses persistent connections and frames each **jsonrpc** request/response object with a length prefix, which specifies the length in bytes of the actual message; hence the name **jsonFrame**.
+A **[jsonrpc 2.0]** implementation supporting both TCP and HTTP transports. The TCP implementation uses persistent connections and frames each **jsonrpc** request/response object with a **length prefix** in **network byte order(big endian)**, which specifies the length in bytes of the actual message; hence the name **jsonFrame**.
 Both the client and server must agree on a length prefix.
 
 ##Why length-prefixing?
 TCP is a stream-oriented protocol as opposed to a message-oriented protocol like HTTP. Data is treated as a continuous flow of data and there are no self-delimiting patterns to determine where one message ends and another starts. 
 A few solutions exist to approach this problem:
-* Process a stream of JSON-encoded strings by reading each character, counting and matching `}`, and eventually parsing using `JSON.parse`. Writing a hand-coded JSON parser is ought to be slower than the native `JSON.parse` method.
+* Process a stream of JSON-encoded strings by reading each character, counting and matching `}`, and eventually parsing using `JSON.parse`. Writing a hand-coded JSON parser, however, is ought to be slower than the native `JSON.parse` method.
 * Using a delimiter like `\n` to delimit each JSON-encoded message. However, one must also deal with the delimiter appearing in the message itself. For e.g., `{"method":"sendMessage","params":["Hello, \n jsonrpc"],"jsonrpc":"2.0"}\n`
 * In Length-prefixing, each message is sent by prefixing it with the number of bytes contained in the message. This allows an application to receive a message by first reading the length-prefix and then reading as many bytes as the value of length-prefix. It requires the client and server to agree on a length-prefix.
+
+## Installation
+`npm install jsonframe`
+
 
 ## Package
 * JSON-RPC TCP server and client
@@ -62,6 +66,11 @@ rpcServer.listen(3000);
   
   rpcClient.invoke('currentJsonRpcVersion', function (err, res) {
     err || assert.equal(res, '2.0');
+  });
+  
+  //structured object args
+  rpcClient.invoke('createUser', {name: 'jsonrpc', age: 2}, function (err, newUser) {
+    assert('jsonrpc' === newUser.name);
   });
   
 ```
