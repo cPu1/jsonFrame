@@ -119,13 +119,13 @@ rpcServer.listen(3000);
 ```
 
 ##JSON-RPC Connect Middleware
-A [Connect Middleware] for handling JSON-RPC requests. The middleware must be configured with an object containing the methods you wish to invoke. The middleware depends on `bodyParser` middleware and must be configured after it.
+[Connect Middleware] for handling JSON-RPC requests. The middleware must be configured with an object containing the methods you wish to invoke. It depends on `bodyParser` middleware and must be configured after it.
 
 ##Example
 
 ```javascript
    var jsonFrame = require('jsonFrame');
-//... other middlewares
+//... other middleware
   app.use(connect.bodyParser()); //or express.bodyParser() using express
   app.use(jsonFrame.jsonrpc(methods));
 
