@@ -22,7 +22,7 @@ A few solutions exist to approach this problem:
 * `jsonTransformer`: A node.js [streams2 Transform] implementation that reads length-prefixed messages built using `jsonFrame.build(message)`
 
 
-##Usage
+## Usage
 
 ```javascript
 var methods = {
@@ -42,7 +42,7 @@ rpcServer.listen(3000);
 
 ```
 
-##Simple requests
+## Simple requests
 
 ```javascript
   rpcClient.invoke('add', [21, 21], function (err, res) {
@@ -75,7 +75,7 @@ rpcServer.listen(3000);
   
 ```
 
-##Batch requests
+## Batch requests
   A batch invoke operation receives a batch callback. Request objects are added to batch using `add` and `notify`.
   The batch builder received in callback is chainable and has a fluent interface allowing calls of the form:
   ``` javascript
@@ -105,7 +105,7 @@ rpcServer.listen(3000);
 ```
 
 
-##Notifications
+## Notifications
 [JSON-RPC notifications] signify the client's lack of interest in the corresponding response object. As such, they do not receive a response object and an invocation must not pass a callback.
 
 ```javascript
@@ -118,7 +118,7 @@ rpcServer.listen(3000);
 
 ```
 
-##JSON-RPC Connect Middleware
+## JSON-RPC Connect Middleware
 [Connect Middleware] for handling JSON-RPC requests. The middleware must be configured with an object containing the methods you wish to invoke. It depends on `bodyParser` middleware and must be configured after it.
 
 ##Example
@@ -131,12 +131,12 @@ rpcServer.listen(3000);
 
 ```
 
-##jsonTransformer
+## jsonTransformer
 A streams 2 Transform implementation that can be `pipe`d to any `stream.Readable` stream . You'd never have to explicitly use it for serving jsonrpc clients. It can be used for applications that want to process a stream of JSON-encoded strings with each string prefixed with a length, in bytes, of the JSON message.
 
 For each JSON-encoded string, jsonTransformer emits a `data` event with the parsed JSON. Malformed JSON strings that are not valid according to the [JSON grammar] receive a `parse error` event.
 
-#Example
+# Example
 
 ```javascript
   
@@ -168,7 +168,7 @@ For each JSON-encoded string, jsonTransformer emits a `data` event with the pars
   
 ```
 
-###jQuery JSON-RPC Function Plugin
+### jQuery JSON-RPC Function Plugin
 HTTP counterpart of `TcpJsonRpcClient`; supports the same methods: `invoke`, `notify`
 
 
