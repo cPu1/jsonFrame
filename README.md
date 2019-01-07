@@ -4,7 +4,7 @@ jsonFrame
 A **[jsonrpc 2.0]** implementation supporting both TCP and HTTP transports. The TCP implementation uses persistent connections and frames each **jsonrpc** request/response object with a **length prefix** in **network byte order(big endian)**, which specifies the length in bytes of the actual message; hence the name **jsonFrame**.
 Both the client and server must agree on a length prefix.
 
-##Why length-prefixing?
+## Why length-prefixing?
 TCP is a stream-oriented protocol as opposed to a message-oriented protocol like HTTP. Data is treated as a continuous flow of data and there are no self-delimiting patterns to determine where one message ends and another starts. 
 A few solutions exist to approach this problem:
 * Process a stream of JSON-encoded strings by reading each character, counting and matching `}`, and eventually parsing using `JSON.parse`. Writing a hand-coded JSON parser, however, is ought to be slower than the native `JSON.parse` method.
